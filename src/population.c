@@ -33,7 +33,7 @@ void population_crossover(const kromosom p1, const kromosom p2, kromosom c1, kro
 	int i, j;
 	int index1, index2;
 
-	/* get the alpha from LFSR */
+	/* get the alpha from LFSR1 */
 
 	alpha &= 0x0F;
 
@@ -69,4 +69,20 @@ void population_crossover(const kromosom p1, const kromosom p2, kromosom c1, kro
 
 void population_mutation(kromosom k)
 {
+	uint8_t p;
+	uint8_t indicator, i, j;
+
+	/* get p from LFSR2 */
+	
+	if (p >= 64)
+		return;
+
+	/* get indicator from LFSR3 */
+
+	i = indicator & 0x0F;
+	j = indicator & 0xF0;
+
+	k[i] = k[i] + k[j];
+	k[j] = k[i] - k[j];
+	k[i] = k[i] - k[j];
 }
