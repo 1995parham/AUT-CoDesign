@@ -18,6 +18,9 @@
 #include <stdint.h>
 
 kromosom population[32];
+static int E[27][27];
+static int E_total;
+static int T[32][27][27];
 
 static int population_sort_fn(const void *a, const void *b)
 {
@@ -26,6 +29,17 @@ static int population_sort_fn(const void *a, const void *b)
 void population_sort(void)
 {
 	qsort(population, 32, sizeof(kromosom), population_sort_fn);
+}
+
+void fill_E(int **e, int total)
+{
+	int i, j;
+
+	E_total = total;
+}
+
+void fill_T(void)
+{
 }
 
 void population_crossover(const kromosom p1, const kromosom p2, kromosom c1, kromosom c2)
