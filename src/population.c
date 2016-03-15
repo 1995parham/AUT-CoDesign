@@ -19,12 +19,13 @@
 
 kromosom population[32];
 
-void population_sort(void)
+static int population_sort_fn(const void *a, const void *b)
 {
 }
 
-static int population_sort_fn(const void *a, const void *b)
+void population_sort(void)
 {
+	qsort(population, 32, sizeof(kromosom), population_sort_fn);
 }
 
 void population_crossover(const kromosom p1, const kromosom p2, kromosom c1, kromosom c2)
