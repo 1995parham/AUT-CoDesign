@@ -8,6 +8,8 @@
 # =======================================
 add_executable(coDesign.out main.c
 	defs.h
+	decoder.h decoder.c
+	population.h population.c
 	)
 
 # Add personal c flags
