@@ -13,21 +13,27 @@
 */
 
 #include "defs.h"
+#include "text.h"
+#include "population.h"
 
 #include <stdlib.h>
 #include <stdint.h>
 
 kromosom population[32];
+
 static int E[27][27];
 static int E_total;
 static int T[32][27][27];
 
 static int population_sort_fn(const void *a, const void *b)
 {
+	const kromosom *k1 = (const kromosom *) a;
+	const kromosom *k2 = (const kromosom *) b;
 }
 
 void population_sort(void)
 {
+	fill_T();
 	qsort(population, 32, sizeof(kromosom), population_sort_fn);
 }
 
@@ -36,10 +42,39 @@ void fill_E(int **e, int total)
 	int i, j;
 
 	E_total = total;
+
+	for (i = 0; i < 27; i++) {
+		for (j = 0; j < 27; j++) {
+			E[i][j] = e[i][j];
+		}
+	}
 }
 
 void fill_T(void)
 {
+	int i, j;
+
+	for (i = 0; i < 32; i++) {
+		char decoded_text[TEXT_SIZE];
+		
+		decode_text(population[i], decoded_text);
+	
+		for (j = 0; j < TEXT_SIZE; j++) {
+			int a = 0;
+			int b = 0;
+			
+			if (decoded_text[j] == ' ')
+				a = 26;
+			else
+				a = decoded_text[j] - 'a';
+			
+			if (decoded_text[j + 1] == ' ')
+				b = 26;
+			else
+				b = decoded_text[j + 1] - 'a';
+			T[i][a][b]++;
+		}
+	}
 }
 
 void population_crossover(const kromosom p1, const kromosom p2, kromosom c1, kromosom c2)
