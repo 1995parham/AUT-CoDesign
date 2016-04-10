@@ -15,10 +15,14 @@
 #ifndef DEFS_H
 #define DEFS_H
 
+#define TEXT_SIZE 5
+
 #include <stdint.h>
 
 typedef uint8_t kromosom[16];
 
 extern kromosom population[32];
+
+extern char text[TEXT_SIZE];
 
 #endif
