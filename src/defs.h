@@ -15,7 +15,7 @@
 #ifndef DEFS_H
 #define DEFS_H
 
-#define TEXT_SIZE 5
+#define TEXT_SIZE 16
 
 #include <stdint.h>
 
