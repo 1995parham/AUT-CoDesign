@@ -50,7 +50,14 @@ struct lfsr *GLFSR_new(lfsr_data_t polynom, lfsr_data_t seed_value)
 	struct lfsr *glfsr;
 
 	glfsr = malloc(sizeof(struct lfsr));
+	
+	GLFSR_init(glfsr, polynom, seed_value);
+	
+	return glfsr;
+}
 
+void GLFSR_init(struct lfsr *glfsr, lfsr_data_t polynom, lfsr_data_t seed_value)
+{
 	lfsr_data_t seed_mask;
 	unsigned int shift = 8 * sizeof(lfsr_data_t) - 1;
 
@@ -67,8 +74,6 @@ struct lfsr *GLFSR_new(lfsr_data_t polynom, lfsr_data_t seed_value)
 		}
 		seed_mask >>= 1;
 	}
-
-	return glfsr;
 }
 
 unsigned char GLFSR_next(struct lfsr *glfsr)
