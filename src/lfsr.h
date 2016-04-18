@@ -6,7 +6,7 @@
 
 #include <stdint.h>
 
-typedef	uint64_t lfsr_data_t;
+typedef	uint8_t lfsr_data_t;
 
 struct lfsr {
         lfsr_data_t data,
