@@ -15,7 +15,7 @@
 #include "defs.h"
 #include "text.h"
 
-char text[TEXT_SIZE] = "--Hello World!--";
+char text[TEXT_SIZE] = TEXT_DATA;
 
 void decode_text(kromosom k, char decoded_text[TEXT_SIZE])
 {

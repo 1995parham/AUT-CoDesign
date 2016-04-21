@@ -15,7 +15,8 @@
 #ifndef DEFS_H
 #define DEFS_H
 
-#define TEXT_SIZE 16
+#define TEXT_DATA "Hello world :)"
+#define TEXT_SIZE sizeof(TEXT_DATA)
 
 #include <stdint.h>
 
