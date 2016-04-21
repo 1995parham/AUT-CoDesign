@@ -21,6 +21,8 @@ void pupolation_crossover(const kromosom p1, const kromosom p2, kromosom c1, kro
 
 void pupolation_mutation(kromosom k);
 
+void population_next(void);
+
 void fill_E(int **e, int total);
 
 void fill_T(void);
