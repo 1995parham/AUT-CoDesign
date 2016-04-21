@@ -19,10 +19,14 @@
 
 #include <stdint.h>
 
+#include "lfsr.h"
+
 typedef uint8_t kromosom[16];
 
 extern kromosom population[32];
 
 extern char text[TEXT_SIZE];
+
+extern struct lfsr lfsr1, lfsr2, lfsr3;
 
 #endif
