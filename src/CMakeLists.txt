@@ -11,6 +11,7 @@ add_executable(coDesign.out main.c
 	decoder.h decoder.c
 	population.h population.c
 	lfsr.h lfsr.c
+	text.h text.c
 	)
 
 # Add personal c flags
