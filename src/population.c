@@ -15,11 +15,14 @@
 #include "defs.h"
 #include "text.h"
 #include "population.h"
+#include "lfsr.h"
 
 #include <stdlib.h>
 #include <stdint.h>
 
 kromosom population[32];
+
+struct lfsr lfsr1, lfsr2, lfsr3;
 
 static int E[27][27];
 static int E_total;
@@ -77,6 +80,17 @@ void fill_T(void)
 	}
 }
 
+void population_next(void)
+{
+	int i;
+
+	/* population sorting */
+
+	/* crossover operator */
+	for (i = 0; i < 16; i += 2)
+		population_crossover(population[i], population[i + 1], population[i + 16], population[i + 1 + 16]);	
+}
+
 void population_crossover(const kromosom p1, const kromosom p2, kromosom c1, kromosom c2)
 {
 	uint8_t alpha;
@@ -84,6 +98,7 @@ void population_crossover(const kromosom p1, const kromosom p2, kromosom c1, kro
 	int index1, index2;
 
 	/* get the alpha from LFSR1 */
+	alpha = GLFSR_next(&lfsr1);
 
 	alpha &= 0x0F;
 
@@ -123,11 +138,13 @@ void population_mutation(kromosom k)
 	uint8_t indicator, i, j;
 
 	/* get p from LFSR2 */
+	p = GLFSR_next(&lfsr2);
 	
 	if (p >= 64)
 		return;
 
 	/* get indicator from LFSR3 */
+	indicator = GLFSR_next(&lfsr3);
 
 	i = indicator & 0x0F;
 	j = indicator & 0xF0;
