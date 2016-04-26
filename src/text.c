@@ -17,13 +17,13 @@
 
 char text[TEXT_SIZE] = TEXT_DATA;
 
-void decode_text(kromosom k, char decoded_text[TEXT_SIZE])
+void decode_text(const kromosom *k, char decoded_text[TEXT_SIZE])
 {
 	int i, j;
 
 	for (i = 0; i < (int)(TEXT_SIZE / 16); i++) {
 		for (j = 0; j < 16; j++) {
-			decoded_text[i * 16 + j] = text[i * 16 + k[j]];
+			decoded_text[i * 16 + j] = text[i * 16 + k->d[j]];
 		}
 	}
 }

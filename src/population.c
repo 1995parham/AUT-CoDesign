@@ -60,7 +60,7 @@ void fill_T(void)
 	for (i = 0; i < 32; i++) {
 		char decoded_text[TEXT_SIZE];
 		
-		decode_text(population[i], decoded_text);
+		decode_text(&population[i], decoded_text);
 	
 		for (j = 0; j < TEXT_SIZE; j++) {
 			int a = 0;
@@ -88,10 +88,10 @@ void population_next(void)
 
 	/* crossover operator */
 	for (i = 0; i < 16; i += 2)
-		population_crossover(population[i], population[i + 1], population[i + 16], population[i + 1 + 16]);	
+		population_crossover(&population[i], &population[i + 1], &population[i + 16], &population[i + 1 + 16]);	
 }
 
-void population_crossover(const kromosom p1, const kromosom p2, kromosom c1, kromosom c2)
+void population_crossover(const kromosom *p1, const kromosom *p2, kromosom *c1, kromosom *c2)
 {
 	uint8_t alpha;
 	int i, j;
@@ -103,8 +103,8 @@ void population_crossover(const kromosom p1, const kromosom p2, kromosom c1, kro
 	alpha &= 0x0F;
 
 	for (i = 0; i < alpha; i++) {
-		c1[i] = p1[i];
-		c2[i] = p2[i];
+		c1->d[i] = p1->d[i];
+		c2->d[i] = p2->d[i];
 	}
 
 	index1 = alpha;
@@ -114,25 +114,25 @@ void population_crossover(const kromosom p1, const kromosom p2, kromosom c1, kro
 		int flag2 = 0;
 
 		for (j = 0; j < alpha; j++) {
-			if (c1[j] == p2[i]) {
+			if (c1->d[j] == p2->d[i]) {
 				flag1 = 1;
 			}
-			if (c2[j] == p1[i]) {
+			if (c2->d[j] == p1->d[i]) {
 				flag2 = 1;
 			}
 		}
 		if (!flag1) {
-			c1[index1] = p2[i];
+			c1->d[index1] = p2->d[i];
 			index1++;
 		}
 		if (!flag2) {
-			c2[index2] = p1[i];
+			c2->d[index2] = p1->d[i];
 			index2++;
 		}
 	}
 }
 
-void population_mutation(kromosom k)
+void population_mutation(kromosom *k)
 {
 	uint8_t p;
 	uint8_t indicator, i, j;
@@ -149,7 +149,7 @@ void population_mutation(kromosom k)
 	i = indicator & 0x0F;
 	j = indicator & 0xF0;
 
-	k[i] = k[i] + k[j];
-	k[j] = k[i] - k[j];
-	k[i] = k[i] - k[j];
+	k->d[i] = k->d[i] + k->d[j];
+	k->d[j] = k->d[i] - k->d[j];
+	k->d[i] = k->d[i] - k->d[j];
 }

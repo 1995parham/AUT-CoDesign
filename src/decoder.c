@@ -17,15 +17,15 @@
 #include <string.h>
 #include <stdlib.h>
 
-void decode_block(const char block[16], char decoded_block[16], kromosom k)
+void decode_block(const char block[16], char decoded_block[16], const kromosom *k)
 {
 	int i;
 
 	for (i = 0; i < 16; i++)
-		decoded_block[i] = block[k[i]];
+		decoded_block[i] = block[k->d[i]];
 }
 
-void decode(const char *text, char **decoded_text, kromosom k)
+void decode(const char *text, char **decoded_text, const kromosom *k)
 {
 	int i;
 

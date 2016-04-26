@@ -39,7 +39,7 @@ int main(int argc, char *argv[])
 	FILE *keys = fopen("keys", "r");
 	for (i = 0; i < 32; i++)
 		for (j = 0; j < 16; j++)
-			fscanf(keys, "%" SCNu8, &population[i][j]);
+			fscanf(keys, "%" SCNu8, &(population[i].d[j]));
 
 	/* Simulation */
 	for (i = 0; i < 1024; i++)

@@ -17,8 +17,8 @@
 
 #include "defs.h"
 
-void decode_block(const char block[16], char decoded_block[16], kromosom k);
+void decode_block(const char block[16], char decoded_block[16], const kromosom *k);
 
-void decode(const char *text, char **decoded_text, kromosom k);
+void decode(const char *text, char **decoded_text, const kromosom *k);
 
 #endif

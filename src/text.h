@@ -15,6 +15,6 @@
 #ifndef TEXT_H
 #define TEXT_H
 
-void decode_text(kromosom k, char decoded_text[TEXT_SIZE]);
+void decode_text(const kromosom *k, char decoded_text[TEXT_SIZE]);
 
 #endif
