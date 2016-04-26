@@ -22,7 +22,12 @@
 
 #include "lfsr.h"
 
-typedef uint8_t kromosom[16];
+typedef struct {
+	/* Kromosom key */
+	uint8_t d[16];
+	/* Kromosom rank */
+	uint8_t i;
+} kromosom;
 
 extern kromosom population[32];
 
