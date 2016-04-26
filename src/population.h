@@ -12,14 +12,14 @@
  * Copyright (c) 2016 Parham Alvani.
 */
 
-#ifndef POPULATION
-#define POPULATION
+#ifndef POPULATION_H
+#define POPULATION_H
 
 void population_sort(void);
 
-void pupolation_crossover(const kromosom p1, const kromosom p2, kromosom c1, kromosom c2);
+void pupolation_crossover(const kromosom *p1, const kromosom *p2, kromosom *c1, kromosom *c2);
 
-void pupolation_mutation(kromosom k);
+void pupolation_mutation(kromosom *k);
 
 void population_next(void);
 
