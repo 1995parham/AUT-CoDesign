@@ -59,18 +59,18 @@ void fill_T(void)
 
 	for (i = 0; i < 32; i++) {
 		char decoded_text[TEXT_SIZE];
-		
+
 		decode_text(&population[i], decoded_text);
-	
+
 		for (j = 0; j < TEXT_SIZE; j++) {
 			int a = 0;
 			int b = 0;
-			
+
 			if (decoded_text[j] == ' ')
 				a = 26;
 			else
 				a = decoded_text[j] - 'a';
-			
+
 			if (decoded_text[j + 1] == ' ')
 				b = 26;
 			else
@@ -88,10 +88,12 @@ void population_next(void)
 
 	/* crossover operator */
 	for (i = 0; i < 16; i += 2)
-		population_crossover(&population[i], &population[i + 1], &population[i + 16], &population[i + 1 + 16]);	
+		population_crossover(&population[i], &population[i + 1],
+			&population[i + 16], &population[i + 1 + 16]);
 }
 
-void population_crossover(const kromosom *p1, const kromosom *p2, kromosom *c1, kromosom *c2)
+void population_crossover(const kromosom *p1, const kromosom *p2, kromosom *c1,
+	kromosom *c2)
 {
 	uint8_t alpha;
 	int i, j;
@@ -139,15 +141,15 @@ void population_mutation(kromosom *k)
 
 	/* get p from LFSR2 */
 	p = GLFSR_next(&lfsr2);
-	
+
 	if (p >= 64)
 		return;
 
 	/* get indicator from LFSR3 */
 	indicator = GLFSR_next(&lfsr3);
 
-	i = indicator & 0x0F;
-	j = indicator & 0xF0;
+	i = (uint8_t) (indicator & 0x0F);
+	j = (uint8_t) (indicator & 0xF0);
 
 	k->d[i] = k->d[i] + k->d[j];
 	k->d[j] = k->d[i] - k->d[j];

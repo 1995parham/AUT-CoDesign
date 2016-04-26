@@ -17,9 +17,10 @@
 
 void population_sort(void);
 
-void pupolation_crossover(const kromosom *p1, const kromosom *p2, kromosom *c1, kromosom *c2);
+void population_crossover(const kromosom *p1, const kromosom *p2, kromosom *c1,
+	kromosom *c2);
 
-void pupolation_mutation(kromosom *k);
+void population_mutation(kromosom *k);
 
 void population_next(void);
 
