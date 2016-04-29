@@ -32,6 +32,23 @@ static int population_sort_fn(const void *a, const void *b)
 {
 	const kromosom *k1 = (const kromosom *) a;
 	const kromosom *k2 = (const kromosom *) b;
+
+	int i, j;
+	unsigned int sum1 = 0;
+	unsigned int sum2 = 0;
+
+	for (i = 0; i < 27; i++) {
+		for (j = 0; j < 27; j++) {
+			sum1 += abs(
+				E[i][j] * (int) text_length -
+				T[k1->i][i][j] * E_total);
+			sum2 += abs(
+				E[i][j] * (int) text_length -
+				T[k2->i][i][j] * E_total);
+		}
+	}
+
+	return sum1 - sum2;
 }
 
 void population_sort(void)
@@ -55,14 +72,21 @@ void fill_E(int **e, int total)
 
 void fill_T(void)
 {
-	int i, j;
+	int i, j, k;
+
+	for (i = 0; i < 32; i++)
+		for (j = 0; j < 27; j++)
+			for (k = 0; k < 27; k++)
+				T[i][j][k] = 0;
 
 	for (i = 0; i < 32; i++) {
-		char decoded_text[TEXT_SIZE];
+		population[i].i = (uint8_t) i;
+
+		char decoded_text[text_length + 1];
 
 		decode_text(&population[i], decoded_text);
 
-		for (j = 0; j < TEXT_SIZE; j++) {
+		for (j = 0; j < text_length - 1; j++) {
 			int a = 0;
 			int b = 0;
 
@@ -75,6 +99,7 @@ void fill_T(void)
 				b = 26;
 			else
 				b = decoded_text[j + 1] - 'a';
+			printf("%x %x %d %d\n", decoded_text[j], decoded_text[j+ 1], a, b);
 			T[i][a][b]++;
 		}
 	}
@@ -85,11 +110,16 @@ void population_next(void)
 	int i;
 
 	/* population sorting */
+	population_sort();
 
 	/* crossover operator */
 	for (i = 0; i < 16; i += 2)
 		population_crossover(&population[i], &population[i + 1],
 			&population[i + 16], &population[i + 1 + 16]);
+
+	/* mutation operator */
+	for (i = 0; i < 32; i++)
+		population_mutation(&population[i]);
 }
 
 void population_crossover(const kromosom *p1, const kromosom *p2, kromosom *c1,
