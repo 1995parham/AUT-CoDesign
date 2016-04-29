@@ -99,7 +99,7 @@ void fill_T(void)
 				b = 26;
 			else
 				b = decoded_text[j + 1] - 'a';
-			printf("%x %x %d %d\n", decoded_text[j], decoded_text[j+ 1], a, b);
+			printf("[%d] %d: %x %x %d %d\n", i, j, decoded_text[j], decoded_text[j+ 1], a, b);
 			T[i][a][b]++;
 		}
 	}
