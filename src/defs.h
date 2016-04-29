@@ -15,10 +15,11 @@
 #ifndef DEFS_H
 #define DEFS_H
 
-#define TEXT_DATA "Hello world :)"
+#define TEXT_DATA "hello world john"
 #define TEXT_SIZE sizeof(TEXT_DATA)
 
 #include <stdint.h>
+#include <stddef.h>
 
 #include "lfsr.h"
 
@@ -32,6 +33,7 @@ typedef struct {
 extern kromosom population[32];
 
 extern char text[TEXT_SIZE];
+extern size_t text_length;
 
 extern struct lfsr lfsr1, lfsr2, lfsr3;
 

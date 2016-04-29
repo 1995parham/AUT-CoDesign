@@ -16,14 +16,15 @@
 #include "text.h"
 
 char text[TEXT_SIZE] = TEXT_DATA;
+size_t text_length = TEXT_SIZE - 1;
 
 void decode_text(const kromosom *k, char decoded_text[TEXT_SIZE])
 {
 	int i, j;
 
-	for (i = 0; i < (int)(TEXT_SIZE / 16); i++) {
+	for (i = 0; i < (int) (text_length / 16); i++) {
 		for (j = 0; j < 16; j++) {
-			decoded_text[i * 16 + j] = text[i * 16 + k->d[j]];
+			decoded_text[i * 16 + j] = text[i * 16 + k->d[j] - 1];
 		}
 	}
 }
