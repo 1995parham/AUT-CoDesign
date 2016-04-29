@@ -23,7 +23,7 @@ int main(int argc, char *argv[])
 	uint8_t s1, p1;
 	uint8_t s2, p2;
 	uint8_t s3, p3;
-	int i, j;
+	int i, j, k;
 
 	/* Seed and Polynomial of our LFSR1 :) */
 	scanf("%" SCNu8 "%" SCNu8, &s1, &p1);
@@ -42,6 +42,14 @@ int main(int argc, char *argv[])
 			fscanf(keys, "%" SCNu8, &(population[i].d[j]));
 
 	/* Simulation */
-	for (i = 0; i < 1024; i++)
+	for (i = 0; i < 1024; i++) {
+		for (j = 0; j < 32; j++) {
+			printf("[%d] ", j);
+			for (k = 0; k < 16; k++) {
+				printf("%d ", population[j].d[k]);
+			}
+			printf("\n");
+		}
 		population_next();
+	}
 }
