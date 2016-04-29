@@ -100,7 +100,8 @@ void fill_T(void)
 				b = 26;
 			else
 				b = decoded_text[j + 1] - 'a';
-			printf("[%d] %d: %x %x %d %d\n", i, j, decoded_text[j], decoded_text[j+ 1], a, b);
+			printf("[%d] %d: %x %x %d %d\n", i, j, decoded_text[j],
+				decoded_text[j + 1], a, b);
 			T[i][a][b]++;
 		}
 	}
@@ -134,6 +135,7 @@ void population_crossover(const kromosom *p1, const kromosom *p2, kromosom *c1,
 	alpha = GLFSR_next(&lfsr1);
 
 	alpha &= 0x0F;
+	alpha++;
 
 	for (i = 0; i < alpha; i++) {
 		c1->d[i] = p1->d[i];
@@ -180,9 +182,13 @@ void population_mutation(kromosom *k)
 	indicator = GLFSR_next(&lfsr3);
 
 	i = (uint8_t) (indicator & 0x0F);
-	j = (uint8_t) (indicator & 0xF0);
+	j = (uint8_t) (indicator & 0xF0 >> 4);
+
+	if (i == j)
+		return;
 
 	k->d[i] = k->d[i] + k->d[j];
 	k->d[j] = k->d[i] - k->d[j];
 	k->d[i] = k->d[i] - k->d[j];
+
 }
