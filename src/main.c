@@ -36,10 +36,13 @@ int main(int argc, char *argv[])
 	GLFSR_init(&lfsr3, p3, s3);
 
 	/* Getting the first population :) */
+	/* TODO: Do in Hardware manner ... */
 	FILE *keys = fopen("keys", "r");
 	for (i = 0; i < 32; i++)
 		for (j = 0; j < 16; j++)
 			fscanf(keys, "%" SCNu8, &(population[i].d[j]));
+
+	/* TODO: Getting E */
 
 	/* Simulation */
 	for (i = 0; i < 1024; i++) {
