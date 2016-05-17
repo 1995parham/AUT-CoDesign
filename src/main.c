@@ -43,10 +43,27 @@ int main(int argc, char *argv[])
 		}
 	}
 
-	/* TODO: Getting E */
-
+	/* Getting E */
+	int total = 1 << 16;
+	int e[27][27];
+	FILE *etalon = fopen("etalon.txt", "r");
+	for (i = 0; i < 28; i++) {
+		for (j = 0; j < 28; j++) {
+			int num;
+			char str[20];
+			if (i == 0) {
+				fscanf(etalon, "%s", str);
+			} else if (j == 0) {
+				fscanf(etalon, "%s", str);
+			} else {
+				fscanf(etalon, "%s %d", str, &num);
+				e[i - 1][j - 1] = num;
+			}
+		}
+	}
+	fill_E(e, total);
 	/* Simulation */
-	for (i = 0; i < 1024; i++) {
+	for (i = 0; i < 30; i++) {
 		for (j = 0; j < 32; j++) {
 			printf("[%d] ", j);
 			for (k = 0; k < 16; k++) {
