@@ -24,7 +24,7 @@ void population_mutation(kromosom *k);
 
 void population_next(void);
 
-void fill_E(int **e, int total);
+void fill_E(int e[27][27], int total);
 
 void fill_T(void);
 

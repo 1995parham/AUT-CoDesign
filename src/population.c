@@ -58,7 +58,7 @@ void population_sort(void)
 	qsort(population, 32, sizeof(kromosom), population_sort_fn);
 }
 
-void fill_E(int **e, int total)
+void fill_E(int e[27][27], int total)
 {
 	int i, j;
 
