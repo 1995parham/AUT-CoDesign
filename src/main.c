@@ -25,21 +25,27 @@ int main(int argc, char *argv[])
 	uint8_t s2;
 	uint8_t s3;
 	int i, j;
-	int fd;
+	int fd, retval;
 
 	fd = open_serial("/dev/ttyUSB0");
 	FILE *ser = fdopen(fd, "wr");
 
 	/* Seed and Polynomial of our LFSR1 :) */
-	fscanf(ser, "%" SCNu8, &s1);
+	do {
+		retval = fscanf(ser, "%" SCNu8, &s1);
+	} while (!retval);
 	GLFSR_init(&lfsr1, 0xB8, s1);
 	
 	/* Seed and Polynomial of our LFSR2 :) */
-	fscanf(ser, "%" SCNu8, &s2);
+	do {
+		retval = fscanf(ser, "%" SCNu8, &s2);
+	} while (!retval);
 	GLFSR_init(&lfsr2, 0xB8, s2);
 	
 	/* Seed and Polynomial of our LFSR2 :) */
-	fscanf(ser, "%" SCNu8, &s3);
+	do {
+		fscanf(ser, "%" SCNu8, &s3);
+	} while (!retval);
 	GLFSR_init(&lfsr3, 0xB8, s3);
 
 	/* Read RefText */
