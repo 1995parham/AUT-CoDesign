@@ -25,8 +25,8 @@
 typedef struct {
 	/* Kromosom key */
 	uint8_t d[16];
-	/* Kromosom rank */
-	uint8_t i;
+	/* Kromosom T value */
+	int T[27][27];
 } kromosom;
 
 extern kromosom population[32];
