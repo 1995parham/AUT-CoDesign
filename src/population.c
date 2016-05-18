@@ -82,7 +82,7 @@ void *fill_T_fn(void *input) {
 
 	decode_text(&population[i], decoded_text);
 
-	for (j = 0; j < text_length - 1; j++) {
+	for (j = 0; j < text_length; j++) {
 		int a = 0;
 		int b = 0;
 
@@ -116,22 +116,14 @@ void fill_T(void)
 	/* Initialize and set thread detached attribute */
 	pthread_attr_init(&attr);
 	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
-	for (i = 0; i < 32; i++)
+	for (i = 0; i < 32; i++) {
 		pthread_create(&tids[i], &attr, fill_T_fn, (void *) i);
+		pthread_join(tids[i], NULL);
+	}
 
 	pthread_attr_destroy(&attr);
-	for (i = 0; i < 32; i++)
-		pthread_join(tids[i], NULL);
-}
-
-void *population_crossover_fn(void *input)
-{
-	long i = (long) input;
-
-	population_crossover(&population[i], &population[i + 1],
-		&population[i + 16], &population[i + 1 + 16]);
-
-	pthread_exit(NULL);
+	//for (i = 0; i < 32; i++)
+	//	pthread_join(tids[i], NULL);
 }
 
 void population_next(void)
@@ -142,19 +134,10 @@ void population_next(void)
 	population_sort();
 
 	/* crossover operator */
-	/* Using thread to simulate hardware :D */
-	pthread_t tids[8];
-	pthread_attr_t attr;
-	/* Initialize and set thread detached attribute */
-	pthread_attr_init(&attr);
-	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
 	for (i = 0; i < 16; i += 2)
-		pthread_create(&tids[i / 2], &attr, population_crossover_fn, (void *) i);
+		population_crossover(&population[i], &population[i + 1],
+			&population[i + 16], &population[i + 1 + 16]);
 
-	pthread_attr_destroy(&attr);
-	for (i = 0; i < 8; i++)
-		pthread_join(tids[i], NULL);
-	
 	/* mutation operator */
 	for (i = 0; i < 32; i++)
 		population_mutation(&population[i]);
