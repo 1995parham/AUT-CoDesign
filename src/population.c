@@ -100,8 +100,6 @@ void fill_T(void)
 				b = 26;
 			else
 				b = decoded_text[j + 1] - 'a';
-			printf("[%d] %d: %x %x %d %d\n", i, j, decoded_text[j],
-				decoded_text[j + 1], a, b);
 			T[i][a][b]++;
 		}
 	}
@@ -129,7 +127,7 @@ void population_crossover(const kromosom *p1, const kromosom *p2, kromosom *c1,
 {
 	uint8_t alpha;
 	int i, j;
-	int index1, index2;
+	int flags1[16], flags2[16];
 
 	/* get the alpha from LFSR1 */
 	alpha = lfsr1.data;
@@ -138,32 +136,39 @@ void population_crossover(const kromosom *p1, const kromosom *p2, kromosom *c1,
 	alpha &= 0x0F;
 	alpha++;
 
-	for (i = 0; i < alpha; i++) {
-		c1->d[i] = p1->d[i];
-		c2->d[i] = p2->d[i];
+	for (i = 0; i < 16; i++) {
+		flags1[i] = 0;
+		flags2[i] = 0;
 	}
 
-	index1 = alpha;
-	index2 = alpha;
-	for (i = 0; i < 16; i++) {
-		int flag1 = 0;
-		int flag2 = 0;
+	for (i = 0; i < alpha; i++) {
+		c1->d[i] = p1->d[i];
+		flags1[p1->d[i]] = 1;
 
-		for (j = 0; j < alpha; j++) {
-			if (c1->d[j] == p2->d[i]) {
-				flag1 = 1;
-			}
-			if (c2->d[j] == p1->d[i]) {
-				flag2 = 1;
+		c2->d[i] = p2->d[i];
+		flags2[p2->d[i]] = 1;
+	}
+
+	for (i = 0; i < 16; i++) {
+		int flag1 = 1;
+		int flag2 = 1;
+
+		for (j = 0; j < 16 && flag1; j++) {
+			int index = p2->d[j];
+			if (!flags1[index]){
+				c1->d[i] = index;
+				flags1[index] = 1;
+				flag1 = 0;
 			}
 		}
-		if (!flag1) {
-			c1->d[index1] = p2->d[i];
-			index1++;
-		}
-		if (!flag2) {
-			c2->d[index2] = p1->d[i];
-			index2++;
+
+		for (j = 0; j < 16 && flag2; j++) {
+			int index = p1->d[j];
+			if (!flags2[index]){
+				c2->d[i] = index;
+				flags2[index] = 1;
+				flag2 = 0;
+			}
 		}
 	}
 }
@@ -185,7 +190,7 @@ void population_mutation(kromosom *k)
 	GLFSR_next(&lfsr3);
 
 	i = (uint8_t) (indicator & 0x0F);
-	j = (uint8_t) (indicator & 0xF0 >> 4);
+	j = (uint8_t) (indicator >> 4);
 
 	if (i == j)
 		return;

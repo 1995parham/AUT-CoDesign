@@ -15,10 +15,10 @@
 #include "defs.h"
 #include "text.h"
 
-char text[TEXT_SIZE] = TEXT_DATA;
 size_t text_length = TEXT_SIZE - 1;
+char text[TEXT_SIZE];
 
-void decode_text(const kromosom *k, char decoded_text[TEXT_SIZE])
+void decode_text(const kromosom *k, char decoded_text[text_length + 1])
 {
 	int i, j;
 

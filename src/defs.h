@@ -15,13 +15,12 @@
 #ifndef DEFS_H
 #define DEFS_H
 
-#define TEXT_DATA "hello world john"
-#define TEXT_SIZE sizeof(TEXT_DATA)
-
 #include <stdint.h>
 #include <stddef.h>
 
 #include "lfsr.h"
+
+#define TEXT_SIZE 8193
 
 typedef struct {
 	/* Kromosom key */
