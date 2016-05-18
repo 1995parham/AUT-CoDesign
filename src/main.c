@@ -17,6 +17,7 @@
 
 #include "defs.h"
 #include "population.h"
+#include "serial.h"
 
 int main(int argc, char *argv[])
 {
@@ -24,15 +25,21 @@ int main(int argc, char *argv[])
 	uint8_t s2;
 	uint8_t s3;
 	int i, j;
+	int fd;
+
+	fd = open_serial("/dev/ttyUSB0");
+	FILE *ser = fdopen(fd, "wr");
 
 	/* Seed and Polynomial of our LFSR1 :) */
-	scanf("%" SCNu8, &s1);
+	fscanf(ser, "%" SCNu8, &s1);
 	GLFSR_init(&lfsr1, 0xB8, s1);
+	
 	/* Seed and Polynomial of our LFSR2 :) */
-	scanf("%" SCNu8, &s2);
+	fscanf(ser, "%" SCNu8, &s2);
 	GLFSR_init(&lfsr2, 0xB8, s2);
+	
 	/* Seed and Polynomial of our LFSR2 :) */
-	scanf("%" SCNu8, &s3);
+	fscanf(ser, "%" SCNu8, &s3);
 	GLFSR_init(&lfsr3, 0xB8, s3);
 
 	/* Read RefText */
@@ -74,9 +81,13 @@ int main(int argc, char *argv[])
 	
 	for (i = 0; i < 32; i++) {
 		printf("[%d] ", i);
-		for (j = 0; j < 16; j++)
+		fprintf(ser, "[%d] ", i);
+		for (j = 0; j < 16; j++) {
+			fprintf(ser, "%d ", population[i].d[j]);
 			printf("%d ", population[i].d[j]);
+		}
 		printf("\n");
+		fprintf(ser, "\n");
 	}
 	
 }
