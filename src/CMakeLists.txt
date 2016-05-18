@@ -12,6 +12,7 @@ add_executable(CoDesign.out main.c
 	population.h population.c
 	lfsr.h lfsr.c
 	text.h text.c
+	serial.h serial.c
 	)
 
 target_link_libraries(CoDesign.out pthread)
