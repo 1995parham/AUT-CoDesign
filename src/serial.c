@@ -77,13 +77,11 @@ int set_interface_attribs(int fd, int speed, int parity)
 
 void init_serial(void)
 {
-	TEST_FD();
-    set_interface_attribs(fd, B115200, 0);
+	set_interface_attribs(fd, B115200, 0);
 }
 
 int write_command(const char *str)
 {
-	TEST_FD();
 
 	int put = 0;
 
@@ -96,7 +94,6 @@ int write_command(const char *str)
 
 char readchar(void)
 {
-	TEST_FD();
 
 	char c;
 
