@@ -74,7 +74,7 @@ void fill_E(int e[27][27], int total)
 
 void *fill_T_fn(void *input) {
 	int j;
-	int i = (int) input;
+	long i = (long) input;
 	
 	population[i].i = (uint8_t) i;
 
@@ -103,7 +103,7 @@ void *fill_T_fn(void *input) {
 
 void fill_T(void)
 {
-	int i, j, k;
+	long i, j, k;
 
 	for (i = 0; i < 32; i++)
 		for (j = 0; j < 27; j++)
@@ -119,13 +119,14 @@ void fill_T(void)
 	for (i = 0; i < 32; i++)
 		pthread_create(&tids[i], &attr, fill_T_fn, (void *) i);
 
+	pthread_attr_destroy(&attr);
 	for (i = 0; i < 32; i++)
 		pthread_join(tids[i], NULL);
 }
 
 void *population_crossover_fn(void *input)
 {
-	int i = (int) input;
+	long i = (long) input;
 
 	population_crossover(&population[i], &population[i + 1],
 		&population[i + 16], &population[i + 1 + 16]);
@@ -135,7 +136,7 @@ void *population_crossover_fn(void *input)
 
 void population_next(void)
 {
-	int i;
+	long i;
 
 	/* population sorting */
 	population_sort();
@@ -150,6 +151,7 @@ void population_next(void)
 	for (i = 0; i < 16; i += 2)
 		pthread_create(&tids[i / 2], &attr, population_crossover_fn, (void *) i);
 
+	pthread_attr_destroy(&attr);
 	for (i = 0; i < 8; i++)
 		pthread_join(tids[i], NULL);
 	
