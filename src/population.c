@@ -113,14 +113,12 @@ void fill_T(void)
 	/* Initialize and set thread detached attribute */
 	pthread_attr_init(&attr);
 	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
-	for (i = 0; i < 32; i++) {
+	for (i = 0; i < 32; i++)
 		pthread_create(&tids[i], &attr, fill_T_fn, (void *) i);
-		pthread_join(tids[i], NULL);
-	}
 
 	pthread_attr_destroy(&attr);
-	//for (i = 0; i < 32; i++)
-	//	pthread_join(tids[i], NULL);
+	for (i = 0; i < 32; i++)
+		pthread_join(tids[i], NULL);
 }
 
 void population_next(void)
