@@ -28,7 +28,6 @@ struct lfsr lfsr1, lfsr2, lfsr3;
 
 static int E[27][27];
 static int E_total;
-static int T[32][27][27];
 
 static int population_sort_fn(const void *a, const void *b)
 {
@@ -43,10 +42,10 @@ static int population_sort_fn(const void *a, const void *b)
 		for (j = 0; j < 27; j++) {
 			sum1 += abs(
 				E[i][j] * (int) text_length -
-				T[k1->i][i][j] * E_total);
+				k1->T[i][j] * E_total);
 			sum2 += abs(
 				E[i][j] * (int) text_length -
-				T[k2->i][i][j] * E_total);
+				k2->T[i][j] * E_total);
 		}
 	}
 
@@ -76,8 +75,6 @@ void *fill_T_fn(void *input) {
 	int j;
 	long i = (long) input;
 	
-	population[i].i = (uint8_t) i;
-
 	char decoded_text[text_length + 1];
 
 	decode_text(&population[i], decoded_text);
@@ -95,7 +92,7 @@ void *fill_T_fn(void *input) {
 		b = 26;
 		else
 			b = decoded_text[j + 1] - 'a';
-		T[i][a][b]++;
+		population[i].T[a][b]++;
 	}
 
 	pthread_exit(NULL);
@@ -108,7 +105,7 @@ void fill_T(void)
 	for (i = 0; i < 32; i++)
 		for (j = 0; j < 27; j++)
 			for (k = 0; k < 27; k++)
-				T[i][j][k] = 0;
+				population[i].T[j][k] = 0;
 
 	/* Using thread to simulate hardware :D */
 	pthread_t tids[32];
