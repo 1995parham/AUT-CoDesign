@@ -14,7 +14,7 @@ add_executable(CoDesign.out main.c
 	text.h text.c
 	)
 
-target_link_libraries(CoDesign pthread)
+target_link_libraries(CoDesign.out pthread)
 
 # Add personal c flags
 set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} -Wall -O0 -g -std=gnu11 ")
