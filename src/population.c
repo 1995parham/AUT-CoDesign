@@ -20,6 +20,7 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <stdio.h>
+#include <pthread.h>
 
 kromosom population[32];
 
@@ -71,6 +72,35 @@ void fill_E(int e[27][27], int total)
 	}
 }
 
+void *fill_T_fn(void *input) {
+	int j;
+	int i = (int) input;
+	
+	population[i].i = (uint8_t) i;
+
+	char decoded_text[text_length + 1];
+
+	decode_text(&population[i], decoded_text);
+
+	for (j = 0; j < text_length - 1; j++) {
+		int a = 0;
+		int b = 0;
+
+		if (decoded_text[j] == ' ')
+			a = 26;
+		else
+			a = decoded_text[j] - 'a';
+
+		if (decoded_text[j + 1] == ' ')
+		b = 26;
+		else
+			b = decoded_text[j + 1] - 'a';
+		T[i][a][b]++;
+	}
+
+	pthread_exit(NULL);
+}
+
 void fill_T(void)
 {
 	int i, j, k;
@@ -80,30 +110,23 @@ void fill_T(void)
 			for (k = 0; k < 27; k++)
 				T[i][j][k] = 0;
 
-	/* TODO: Thread */
-	for (i = 0; i < 32; i++) {
-		population[i].i = (uint8_t) i;
+	/* Using thread to simulate hardware :D */
+	pthread_t tids[32];
+	for (i = 0; i < 32; i++)
+		pthread_create(&tids[i], NULL, fill_T_fn, (void *) i);
 
-		char decoded_text[text_length + 1];
+	for (i = 0; i < 32; i++)
+		pthread_join(tids[i], NULL);
+}
 
-		decode_text(&population[i], decoded_text);
+void *population_crossover_fn(void *input)
+{
+	int i = (int) input;
 
-		for (j = 0; j < text_length - 1; j++) {
-			int a = 0;
-			int b = 0;
+	population_crossover(&population[i], &population[i + 1],
+		&population[i + 16], &population[i + 1 + 16]);
 
-			if (decoded_text[j] == ' ')
-				a = 26;
-			else
-				a = decoded_text[j] - 'a';
-
-			if (decoded_text[j + 1] == ' ')
-				b = 26;
-			else
-				b = decoded_text[j + 1] - 'a';
-			T[i][a][b]++;
-		}
-	}
+	pthread_exit(NULL);
 }
 
 void population_next(void)
@@ -114,11 +137,14 @@ void population_next(void)
 	population_sort();
 
 	/* crossover operator */
+	/* Using thread to simulate hardware :D */
+	pthread_t tids[8];
 	for (i = 0; i < 16; i += 2)
-		/* TODO: Thread */
-		population_crossover(&population[i], &population[i + 1],
-			&population[i + 16], &population[i + 1 + 16]);
+		pthread_create(&tids[i / 2], NULL, population_crossover_fn, (void *) i);
 
+	for (i = 0; i < 8; i++)
+		pthread_join(tids[i], NULL);
+	
 	/* mutation operator */
 	for (i = 0; i < 32; i++)
 		population_mutation(&population[i]);
