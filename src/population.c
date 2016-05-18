@@ -80,6 +80,7 @@ void fill_T(void)
 			for (k = 0; k < 27; k++)
 				T[i][j][k] = 0;
 
+	/* TODO: Thread */
 	for (i = 0; i < 32; i++) {
 		population[i].i = (uint8_t) i;
 
@@ -114,6 +115,7 @@ void population_next(void)
 
 	/* crossover operator */
 	for (i = 0; i < 16; i += 2)
+		/* TODO: Thread */
 		population_crossover(&population[i], &population[i + 1],
 			&population[i + 16], &population[i + 1 + 16]);
 
