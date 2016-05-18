@@ -112,8 +112,12 @@ void fill_T(void)
 
 	/* Using thread to simulate hardware :D */
 	pthread_t tids[32];
+	pthread_attr_t attr;
+	/* Initialize and set thread detached attribute */
+	pthread_attr_init(&attr);
+	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
 	for (i = 0; i < 32; i++)
-		pthread_create(&tids[i], NULL, fill_T_fn, (void *) i);
+		pthread_create(&tids[i], &attr, fill_T_fn, (void *) i);
 
 	for (i = 0; i < 32; i++)
 		pthread_join(tids[i], NULL);
@@ -139,8 +143,12 @@ void population_next(void)
 	/* crossover operator */
 	/* Using thread to simulate hardware :D */
 	pthread_t tids[8];
+	pthread_attr_t attr;
+	/* Initialize and set thread detached attribute */
+	pthread_attr_init(&attr);
+	pthread_attr_setdetachstate(&attr, PTHREAD_CREATE_JOINABLE);
 	for (i = 0; i < 16; i += 2)
-		pthread_create(&tids[i / 2], NULL, population_crossover_fn, (void *) i);
+		pthread_create(&tids[i / 2], &attr, population_crossover_fn, (void *) i);
 
 	for (i = 0; i < 8; i++)
 		pthread_join(tids[i], NULL);
