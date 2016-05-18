@@ -68,15 +68,14 @@ int main(int argc, char *argv[])
 	fill_E(e, total);
 	
 	/* Simulation */
-	for (i = 0; i < 30; i++) {
+	for (i = 0; i < 2; i++) {
 		population_next();
 	}
 	
 	for (i = 0; i < 32; i++) {
 		printf("[%d] ", i);
-		for (j = 0; j < 16; j++) {
+		for (j = 0; j < 16; j++)
 			printf("%d ", population[i].d[j]);
-		}
 		printf("\n");
 	}
 	
